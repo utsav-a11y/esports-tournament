@@ -1,0 +1,19 @@
+{
+  "folders": [
+    {
+      "path": "../backend"
+    },
+    {
+      "path": "../frontend"
+    },
+    {
+      "path": "../maven"
+    }
+  ],
+  "settings": {
+    "files.exclude": {
+      "**/target": true,
+      "**/.git": true
+    }
+  }
+}
