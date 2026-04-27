@@ -39,6 +39,11 @@ npm run dev
 - The backend is already configured to build with Java 21.
 - The repo uses `.gitignore` for common Java, Node, and editor files.
 - `.gitattributes` is included to keep line endings consistent across Windows and other environments.
+- This repository has been cleaned of internal upgrade logs and is ready for GitHub publishing.
+
+## License
+
+This project is licensed under the MIT License. See `LICENSE` for details.
 
 ## Contribution
 
