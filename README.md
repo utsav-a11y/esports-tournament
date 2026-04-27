@@ -34,6 +34,13 @@ npm install
 npm run dev
 ```
 
+## Projects
+
+This repository now includes a `projects/` section for organizing your current and future work.
+
+- `projects/README.md` explains how to organize new projects.
+- `projects/esports-tournament.md` contains details for this repository.
+
 ## Notes
 
 - The backend is already configured to build with Java 21.
