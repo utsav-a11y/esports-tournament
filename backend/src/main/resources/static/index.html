@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Esports Tournament Management</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        slate: { 800: '#1f2937', 900: '#0f172a', 950: '#111827' },
+                        primary: '#3b82f6',
+                        accent: '#22c55e',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #0f172a; color: white; font-family: ui-sans-serif, system-ui, sans-serif; }
+        .card { background-color: #111827; border-radius: 0.75rem; padding: 1.5rem; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); border: 1px solid #1f2937; }
+        .btn-primary { background-color: #3b82f6; color: white; font-weight: 600; padding: 0.5rem 1rem; border-radius: 0.5rem; transition: background-color 0.2s; box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.2); cursor: pointer; }
+        .btn-primary:hover { background-color: #2563eb; }
+        .input-field { background-color: #1f2937; border: 1px solid #374151; color: white; font-size: 0.875rem; border-radius: 0.5rem; padding: 0.625rem; width: 100%; outline: none; }
+        .input-field:focus { border-color: #3b82f6; }
+        .nav-link { display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; border-radius: 0.75rem; color: #9ca3af; transition: all 0.2s; cursor: pointer; }
+        .nav-link:hover, .nav-link.active { background-color: #1f2937; color: white; }
+        .nav-link.active { border-left: 4px solid #3b82f6; color: white; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+    </style>
+</head>
+<body class="flex h-screen overflow-hidden">
+
+    <!-- Sidebar -->
+    <div class="h-full w-64 bg-[#111827] border-r border-gray-800 flex flex-col">
+        <div class="p-6">
+            <h1 class="text-xl font-bold text-white flex items-center gap-2">
+                <span class="text-[#3b82f6]">🏆</span>
+                <span>Esports Hub</span>
+            </h1>
+        </div>
+        <nav class="flex-1 px-4 space-y-2">
+            <a class="nav-link active" onclick="showTab('dashboard', this)"><span>📊</span> Dashboard</a>
+            <a class="nav-link" onclick="showTab('players', this)"><span>👥</span> Players</a>
+            <a class="nav-link" onclick="showTab('tournaments', this)"><span>🏆</span> Tournaments</a>
+            <a class="nav-link" onclick="showTab('matches', this)"><span>⚔️</span> Matches</a>
+            <a class="nav-link" onclick="showTab('register', this)"><span>➕</span> Register</a>
+        </nav>
+    </div>
+
+    <!-- Main Content -->
+    <main class="flex-1 overflow-x-hidden overflow-y-auto p-8">
+        <div class="max-w-7xl mx-auto">
+            
+            <!-- Dashboard Tab -->
+            <div id="dashboard" class="tab-content active space-y-6">
+                <header>
+                    <h1 class="text-3xl font-bold tracking-tight">Dashboard</h1>
+                    <p class="text-gray-400 mt-2">Overview of your esports organization</p>
+                </header>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="card border-[#3b82f6]/20 bg-[#3b82f6]/5">
+                        <p class="text-sm font-medium text-gray-400 mb-1">Total Players</p>
+                        <h3 class="text-3xl font-bold" id="stat-players">...</h3>
+                    </div>
+                    <div class="card border-[#22c55e]/20 bg-[#22c55e]/5">
+                        <p class="text-sm font-medium text-gray-400 mb-1">Tournaments</p>
+                        <h3 class="text-3xl font-bold" id="stat-tournaments">...</h3>
+                    </div>
+                    <div class="card border-orange-500/20 bg-orange-500/5">
+                        <p class="text-sm font-medium text-gray-400 mb-1">Matches Played</p>
+                        <h3 class="text-3xl font-bold" id="stat-matches">...</h3>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Players Tab -->
+            <div id="players" class="tab-content space-y-6">
+                <header>
+                    <h1 class="text-3xl font-bold tracking-tight">Players</h1>
+                </header>
+                <div class="card p-0 overflow-hidden">
+                    <table class="w-full text-left">
+                        <thead class="bg-[#1f2937] text-gray-400 text-sm uppercase">
+                            <tr><th class="px-6 py-4">ID</th><th class="px-6 py-4">Username</th><th class="px-6 py-4">Role</th></tr>
+                        </thead>
+                        <tbody id="players-list" class="divide-y divide-gray-800">
+                            <tr><td colspan="3" class="px-6 py-4 text-center text-gray-400">Loading...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Tournaments Tab -->
+            <div id="tournaments" class="tab-content space-y-6">
+                <header><h1 class="text-3xl font-bold tracking-tight">Tournaments</h1></header>
+                <div id="tournaments-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="text-gray-400">Loading...</div>
+                </div>
+            </div>
+
+            <!-- Matches Tab -->
+            <div id="matches" class="tab-content space-y-6">
+                <header><h1 class="text-3xl font-bold tracking-tight">Matches</h1></header>
+                <div class="card p-0 overflow-hidden" id="matches-list">
+                    <div class="p-8 text-center text-gray-400">Loading...</div>
+                </div>
+            </div>
+
+            <!-- Register Tab -->
+            <div id="register" class="tab-content space-y-6 max-w-2xl mx-auto">
+                <header><h1 class="text-3xl font-bold tracking-tight">Register Player</h1></header>
+                <div class="card">
+                    <div id="register-status" class="hidden p-4 mb-6 rounded-lg font-medium text-center"></div>
+                    <form id="register-form" onsubmit="registerPlayer(event)" class="space-y-6">
+                        <div>
+                            <label class="block mb-2 text-sm font-medium text-gray-300">In-Game Username</label>
+                            <input type="text" id="reg-username" class="input-field" required>
+                        </div>
+                        <div>
+                            <label class="block mb-2 text-sm font-medium text-gray-300">Email Address</label>
+                            <input type="email" id="reg-email" class="input-field" required>
+                        </div>
+                        <div>
+                            <label class="block mb-2 text-sm font-medium text-gray-300">Role</label>
+                            <select id="reg-role" class="input-field">
+                                <option value="Player">Player</option>
+                                <option value="Captain">Team Captain</option>
+                                <option value="Coach">Coach</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn-primary w-full">Register Player</button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        const API_BASE = '/api';
+
+        function showTab(tabId, el) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
+            el.classList.add('active');
+            
+            if (tabId === 'dashboard') loadDashboard();
+            if (tabId === 'players') loadPlayers();
+            if (tabId === 'tournaments') loadTournaments();
+            if (tabId === 'matches') loadMatches();
+        }
+
+        async function fetchJson(url, options = {}) {
+            try {
+                const res = await fetch(url, options);
+                return await res.json();
+            } catch (e) {
+                console.error(e);
+                return [];
+            }
+        }
+
+        async function loadDashboard() {
+            const players = await fetchJson(`${API_BASE}/players`);
+            const tournaments = await fetchJson(`${API_BASE}/tournaments`);
+            const matches = await fetchJson(`${API_BASE}/matches`);
+            
+            document.getElementById('stat-players').innerText = players.length || 0;
+            document.getElementById('stat-tournaments').innerText = tournaments.length || 0;
+            document.getElementById('stat-matches').innerText = matches.length || 0;
+        }
+
+        async function loadPlayers() {
+            const players = await fetchJson(`${API_BASE}/players`);
+            const tbody = document.getElementById('players-list');
+            if (players.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="3" class="px-6 py-4 text-center text-gray-400">No players found.</td></tr>';
+                return;
+            }
+            tbody.innerHTML = players.map(p => `
+                <tr class="hover:bg-[#1f2937]/50">
+                    <td class="px-6 py-4 text-gray-400">#${p.id}</td>
+                    <td class="px-6 py-4 font-semibold text-white">${p.username} <br><span class="text-sm text-gray-400 font-normal">${p.email}</span></td>
+                    <td class="px-6 py-4"><span class="px-3 py-1 rounded-full text-xs bg-[#22c55e]/10 text-[#22c55e] border border-[#22c55e]/20">${p.role || 'Player'}</span></td>
+                </tr>
+            `).join('');
+        }
+
+        async function loadTournaments() {
+            const tournaments = await fetchJson(`${API_BASE}/tournaments`);
+            const list = document.getElementById('tournaments-list');
+            if (tournaments.length === 0) {
+                list.innerHTML = '<div class="col-span-full text-center text-gray-400">No tournaments found.</div>';
+                return;
+            }
+            list.innerHTML = tournaments.map(t => `
+                <div class="card hover:border-[#3b82f6]/50">
+                    <h3 class="text-xl font-bold mb-1">${t.name}</h3>
+                    <p class="text-[#3b82f6] font-medium mb-4">${t.game}</p>
+                    <span class="px-3 py-1 rounded-full text-xs bg-[#22c55e]/10 text-[#22c55e]">${t.status || 'Active'}</span>
+                </div>
+            `).join('');
+        }
+
+        async function loadMatches() {
+            const matches = await fetchJson(`${API_BASE}/matches`);
+            const list = document.getElementById('matches-list');
+            if (matches.length === 0) {
+                list.innerHTML = '<div class="p-8 text-center text-gray-400">No matches found.</div>';
+                return;
+            }
+            list.innerHTML = '<div class="divide-y divide-gray-800">' + matches.map(m => `
+                <div class="p-6 hover:bg-[#1f2937]/30 flex justify-between items-center">
+                    <div class="flex-1 text-right text-xl font-bold">${m.team1?.name || 'TBD'}</div>
+                    <div class="px-8 text-center text-sm text-gray-400">VS</div>
+                    <div class="flex-1 text-left text-xl font-bold">${m.team2?.name || 'TBD'}</div>
+                </div>
+            `).join('') + '</div>';
+        }
+
+        async function registerPlayer(e) {
+            e.preventDefault();
+            const btn = e.target.querySelector('button');
+            btn.innerText = 'Registering...';
+            
+            const payload = {
+                username: document.getElementById('reg-username').value,
+                email: document.getElementById('reg-email').value,
+                role: document.getElementById('reg-role').value
+            };
+
+            const statusEl = document.getElementById('register-status');
+            
+            try {
+                const res = await fetch(`${API_BASE}/players`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                
+                if (res.ok) {
+                    statusEl.className = 'p-4 mb-6 rounded-lg font-medium text-center bg-[#22c55e]/10 border border-[#22c55e]/30 text-[#22c55e]';
+                    statusEl.innerText = 'Player registered successfully!';
+                    e.target.reset();
+                } else {
+                    throw new Error('Failed');
+                }
+            } catch (err) {
+                statusEl.className = 'p-4 mb-6 rounded-lg font-medium text-center bg-red-500/10 border border-red-500/30 text-red-500';
+                statusEl.innerText = 'Registration failed. Try again.';
+            }
+            
+            statusEl.classList.remove('hidden');
+            btn.innerText = 'Register Player';
+        }
+
+        // Initialize dashboard
+        loadDashboard();
+    </script>
+</body>
+</html>

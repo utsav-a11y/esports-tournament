@@ -1,0 +1,61 @@
+# Java / Maven
+target/
+**/target/
+*.log
+*.tmp
+*.temp
+*.class
+*.jar
+*.war
+*.ear
+*.iml
+*.ipr
+*.iws
+.idea/
+*.hprof
+*.DS_Store
+
+# Spring Boot
+spring-boot-devtools.properties
+
+# Eclipse
+.settings/
+.classpath
+.project
+
+# IntelliJ
+*.iml
+.idea/
+out/
+
+# VS Code
+.vscode/
+
+# Node / frontend
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.vite/
+/dist/
+
+# Operating system
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# Local environment
+.env
+.env.*
+
+# Maven wrapper
+.mvn/wrapper/maven-wrapper.jar
+
+# Logs
+logs/
+*.log
+
+# Others
+*.swp
+*~

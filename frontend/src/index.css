@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-[#0f172a] text-white antialiased;
+  }
+}
+
+.card {
+  @apply bg-[#111827] rounded-xl p-6 shadow-lg border border-gray-800 transition-all hover:shadow-xl hover:border-gray-700;
+}
+
+.btn-primary {
+  @apply bg-[#3b82f6] hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-200 shadow-md shadow-blue-500/20;
+}
+
+.btn-success {
+  @apply bg-[#22c55e] hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-200 shadow-md shadow-green-500/20;
+}
+
+.input-field {
+  @apply bg-[#1f2937] border border-gray-700 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 outline-none transition-colors;
+}
