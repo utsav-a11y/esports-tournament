@@ -1,51 +1,45 @@
 # Esports Tournament
 
-This repository contains the Esports Tournament project with a Spring Boot backend and a Vite + React frontend.
+A tournament management platform with a Spring Boot backend and a Vite + React frontend.
+
+## Overview
+
+- **Backend**: Java Spring Boot REST API in `backend/`
+- **Frontend**: React + Vite UI in `frontend/`
+- **Build**: Maven, with a local Maven distribution included in `maven/`
+
+This repository is already connected to GitHub at `https://github.com/utsav-a11y/esports-tournament`.
 
 ## Project structure
 
-- `backend/` - Java Spring Boot backend application
-- `frontend/` - Vite frontend application
-- `maven/` - local Maven distribution included for offline use
+- `backend/` - Java Spring Boot application
+- `frontend/` - Vite + React frontend application
+- `maven/` - local Maven distribution included for builds
 
-## GitHub setup instructions
+## Run locally
 
-1. Open PowerShell or Command Prompt.
-2. Change to the project folder:
-   ```powershell
-   cd c:\Users\utsav\Desktop\esports
-   ```
-3. Initialize Git locally:
-   ```powershell
-   git init
-   ```
-4. Create `.gitignore` (already created in this repo).
-5. Add all files and commit:
-   ```powershell
-   git add .
-   git commit -m "Initial project import"
-   ```
-6. Create a GitHub repository manually or with GitHub CLI.
-
-### If you use the GitHub CLI (`gh`)
+### Backend
 
 ```powershell
-cd c:\Users\utsav\Desktop\esports
-gh repo create <your-username>/<repo-name> --public --source=. --remote=origin --push
+cd c:\Users\utsav\Desktop\esports\backend
+set JAVA_HOME=C:\Users\utsav\.jdk\jdk-21.0.8
+..\maven\apache-maven-3.9.6\bin\mvn.cmd clean spring-boot:run
 ```
 
-### If you prefer the GitHub website
+### Frontend
 
-1. Create a new repository on GitHub.
-2. Copy the remote URL.
-3. Add the remote and push:
-   ```powershell
-   git remote add origin https://github.com/<your-username>/<repo-name>.git
-   git branch -M main
-   git push -u origin main
-   ```
+```powershell
+cd c:\Users\utsav\Desktop\esports\frontend
+npm install
+npm run dev
+```
 
 ## Notes
 
-- If you already have Git installed, the commands above are all you need.
-- If you want, I can also help you create a GitHub repository name and a useful first commit message.
+- The backend is already configured to build with Java 21.
+- The repo uses `.gitignore` for common Java, Node, and editor files.
+- `.gitattributes` is included to keep line endings consistent across Windows and other environments.
+
+## Contribution
+
+If you want, I can also help you add a repository description, a better project logo, or a demo screenshot to make the GitHub page look more polished.
