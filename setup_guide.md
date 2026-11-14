@@ -1,112 +1,129 @@
-# Esports Tournament Management System - Setup Guide
+# Local Setup Guide
 
-This guide provides step-by-step instructions to set up, build, and run the Esports Tournament Management System.
+This guide explains how to run the Esports Tournament Management System on Windows. The same project can also be run on macOS or Linux with equivalent shell commands.
 
-## 1. Prerequisites (Software to Install)
-Before starting, ensure you have the following installed on your machine:
-- **Java JDK 17+**: Required for the Spring Boot backend. [Download here](https://adoptium.net/)
-- **MySQL Server & Workbench**: Required for the database. [Download here](https://dev.mysql.com/downloads/installer/)
-- **Node.js (v18+)**: Required for the React frontend. [Download here](https://nodejs.org/)
-- **Maven**: (Optional) Spring Boot wrapper can be used, but installing Maven is recommended. [Download here](https://maven.apache.org/download.cgi)
-- **IDE**: IntelliJ IDEA (recommended for backend) and VS Code (recommended for frontend).
+## 1. Install prerequisites
 
-## 2. Database Setup
-1. Open **MySQL Workbench**.
-2. Connect to your local MySQL server.
-3. If the database doesn't exist, create it by running the following SQL query:
-   ```sql
-   CREATE DATABASE esports_tournament;
-   ```
-4. The Spring Boot application is configured with `spring.jpa.hibernate.ddl-auto=update`, which will automatically create the required tables (`players`, `teams`, `tournaments`, `matches`, `match_results`, `registrations`, `team_members`, `prizes`) if they don't already exist.
+Install and verify:
 
-## 3. Backend Setup (Spring Boot)
-1. Open the `backend` folder in **IntelliJ IDEA** or your preferred IDE.
-2. Locate the `src/main/resources/application.properties` file.
-3. Update the database credentials to match your local MySQL setup:
-   ```properties
-   spring.datasource.url=jdbc:mysql://localhost:3306/esports_tournament
-   spring.datasource.username=root
-   spring.datasource.password=YOUR_MYSQL_PASSWORD
-   ```
-4. **To run the backend:**
-   - In IntelliJ: Locate the `TournamentApplication.java` file in `src/main/java/com/esports/tournament/` and click the green "Run" button.
-   - Using command line: Navigate to the `backend` directory and run:
-     ```bash
-     mvn spring-boot:run
-     ```
-5. The backend API will start on `# Esports Tournament Management System
+| Tool | Required version | Purpose |
+| --- | --- | --- |
+| Java JDK | 21 | Runs the Spring Boot backend |
+| Apache Maven | 3.9 or newer | Builds and runs the backend |
+| Node.js + npm | Node 18 or newer | Installs and runs the frontend |
+| MySQL Server | 8 or newer | Stores project data |
+| VS Code | Current version | Recommended editor |
 
-## Overview
-The Esports Tournament Management System is a full-stack web application designed to manage esports tournaments, players, teams, matches, and results. It provides a user-friendly interface for registering players and teams, creating tournaments, scheduling matches, and tracking outcomes. The system is built with a Spring Boot backend for robust API services and a React frontend for an interactive user experience.
+Verify in PowerShell:
 
-T# Esports Tournament Management System
+```powershell
+java -version
+mvn -version
+node --version
+npm --version
+```
 
-## Overview
-The Esports Tournament Management System is a full-stack web application designed to manage esports tournaments, players, teams, matches, and results. It provides a user-friendly interface for registering players and teams, creating tournaments, scheduling matches, and tracking outcomes. The system is built with a Spring Boot backend for robust API services and a React frontend for an interactive user experience.
+## 2. Start MySQL and create the database
 
-This project aims to streamline the organization of esports events, making it easier for administrators to handle registrations, match scheduling, and result tracking while providing participants with real-time updates.
+1. Start the MySQL Server service.
+2. Open MySQL Workbench and connect to your local server.
+3. Run:
 
-## Features
-- **Player Management**: Register and manage player profiles with details like name, email, and game preferences.
-- **Team Management**: Create teams, add members, and manage team registrations for tournaments.
-- **Tournament Creation**: Admins can create tournaments with custom rules, schedules, and prize pools.
-- **Match Scheduling**: Automatically or manually schedule matches based on tournament brackets.
-- **Result Tracking**: Record match results, update standings, and calculate points or rankings.
-- **Prize Distribution**: Manage and distribute prizes based on tournament outcomes.
-- **Real-time Updates**: Live updates on match statuses and tournament progress.
-- **Responsive UI**: A modern, mobile-friendly interface built with React and Tailwind CSS.
-- **API-Driven**: RESTful APIs for seamless integration with other systems.
-- **Database Integration**: Uses MySQL for persistent data storage with JPA/Hibernate.
-- **Security**: Basic authentication and authorization for admin and user roles.
+```sql
+CREATE DATABASE esports_tournament;
+```
 
-## Tech Stack
-- **Backend**: Java 17, Spring Boot, Spring Data JPA, Hibernate, MySQL
-- **Frontend**: React 18, Vite, Tailwind CSS, Axios
-- **Database**: MySQL 8.0
-- **Build Tools**: Maven (for backend), npm (for frontend)
-- **Other**: Tomcat (embedded in Spring Boot), ESLint (for code quality)
+If the database already exists, you do not need to create it again.
 
-## Prerequisites
-Before setting up the project, ensure you have the following installed:
-- **Java JDK 17+**: Download from [Adoptium](https://adoptium.net/).
-- **MySQL Server & Workbench**: Download from [MySQL](https://dev.mysql.com/downloads/installer/).
-- **Node.js (v18+)**: Download from [Node.js](https://nodejs.org/).
-- **Maven**: Download from [Maven](https://maven.apache.org/download.cgi). Follow these steps to install:
-  1. Unpack the archive (e.g., `apache-maven-3.9.6.zip`) to a directory like `C:\Program Files\apache-maven-3.9.6`.
-  2. Add the `bin` directory to your PATH environment variable (e.g., `C:\Program Files\apache-maven-3.9.6\bin`).
-  3. Ensure `JAVA_HOME` is set to your JDK installation path.
-  4. Verify installation by running `mvn --version` in the terminal.
-- **IDE**: IntelliJ IDEA for backend, VS Code for frontend.
+## 3. Configure and run the backend
 
-## Installation and Setup
+The backend configuration is in `backend/src/main/resources/application.properties`. Database credentials are read from environment variables rather than stored in source control.
 
-### 1. Clone the Repository
-```bash
-git clone https://github.com/your-username/esports-tournament-system.git
-cd esports-tournament-system`.
+Open a VS Code terminal at the repository root and run:
 
-## 4. Frontend Setup (React + Tailwind)
-1. Open a new terminal and navigate to the `frontend` folder:
-   ```bash
-   cd frontend
-   ```
-2. Install the necessary Node dependencies:
-   ```bash
-   npm install
-   ```
-3. Start the Vite development server:
-   ```bash
-   npm run dev
-   ```
-4. The frontend will start. Open your browser and navigate to the URL provided in the terminal (usually `http://localhost:5173`).
+```powershell
+$env:DB_URL = "jdbc:mysql://localhost:3306/esports_tournament?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true"
+$env:DB_USERNAME = "root"
+$env:DB_PASSWORD = "YOUR_LOCAL_MYSQL_PASSWORD"
 
-## 5. API Endpoints List
-Here are the exposed REST APIs running on `http://localhost:8080/api`:
-- `GET /api/players` - Get all players
-- `POST /api/players` - Create/register a new player
-- `GET /api/tournaments` - Get all tournaments
-- `POST /api/tournaments` - Create a new tournament
-- `GET /api/matches` - Get all matches
-- `GET /api/matches/results` - Get all match results
-- `GET /api/teams` - Get all teams
-- `POST /api/teams/register` - Register a new team
+cd backend
+mvn spring-boot:run
+```
+
+Replace the password placeholder with your own MySQL password. Do not paste it into screenshots, source files, or GitHub.
+
+Wait until the terminal displays a message similar to:
+
+```text
+Started TournamentApplication
+```
+
+The backend API is available at [http://localhost:8080](http://localhost:8080).
+
+Keep this terminal running.
+
+## 4. Install and run the frontend
+
+Open a **second terminal** at the repository root:
+
+```powershell
+cd frontend
+npm install
+npm run dev
+```
+
+Open the local address printed by Vite, usually [http://localhost:5173](http://localhost:5173).
+
+The Vite development server proxies requests beginning with `/api` to `http://localhost:8080`. This allows the frontend and backend to communicate without hard-coding the computer's Wi-Fi/LAN IP address in the browser.
+
+Keep this terminal running too.
+
+## 5. Daily startup checklist
+
+After the first-time installation, the normal startup process is:
+
+1. Start MySQL Server.
+2. Open the repository folder in VS Code.
+3. In terminal 1, set `DB_PASSWORD` (and any non-default DB settings), then run `cd backend` and `mvn spring-boot:run`.
+4. In terminal 2, run `cd frontend` and `npm run dev`.
+5. Open the frontend URL printed by Vite.
+
+You do **not** need to repeat `npm install` every time. Run it again only after dependencies have changed or when setting up a fresh checkout.
+
+## 6. Useful API endpoints
+
+With the backend running:
+
+- `GET http://localhost:8080/api/players`
+- `GET http://localhost:8080/api/teams`
+- `GET http://localhost:8080/api/tournaments`
+- `GET http://localhost:8080/api/matches`
+- `GET http://localhost:8080/api/matches/results`
+
+## 7. Troubleshooting
+
+### `mvn` is not recognized
+
+Install Apache Maven and add its `bin` directory to your Windows `Path`. Close and reopen VS Code after changing environment variables, then verify with `mvn -version`.
+
+### Database connection fails
+
+- Confirm the MySQL Server service is running.
+- Confirm the database name is `esports_tournament`.
+- Check `DB_URL`, `DB_USERNAME`, and `DB_PASSWORD`.
+- Make sure the MySQL account can connect to `localhost:3306`.
+
+### Frontend shows API/network errors
+
+- Confirm the backend terminal still shows `Started TournamentApplication`.
+- Confirm the backend is listening on port `8080`.
+- Start the frontend through `npm run dev` so the Vite proxy in `vite.config.js` is active.
+- Use the URL printed by Vite. Restart the Vite server after editing `vite.config.js`.
+
+### Port already in use
+
+Close the other process using port `8080` (backend) or `5173` (frontend), then start the relevant server again.
+
+## 8. Security reminder
+
+Never commit real database credentials, API tokens, or local environment files. If a credential was committed to a public repository, rotate it immediately; deleting it from the latest file does not remove it from earlier Git history.
