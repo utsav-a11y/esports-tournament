@@ -2,6 +2,8 @@
 
 A full-stack web application for managing esports players, teams, tournaments, and matches. The project combines a **Spring Boot REST API**, **React + Vite frontend**, and **MySQL** database.
 
+[![CI](https://github.com/utsav-a11y/esports-tournament/actions/workflows/ci.yml/badge.svg)](https://github.com/utsav-a11y/esports-tournament/actions/workflows/ci.yml)
+
 <p align="center">
   <img alt="Java 21" src="https://img.shields.io/badge/Java-21-ED8B00?logo=openjdk&logoColor=white">
   <img alt="Spring Boot 3" src="https://img.shields.io/badge/Spring_Boot-3.2.4-6DB33F?logo=springboot&logoColor=white">
