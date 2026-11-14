@@ -1,45 +1,67 @@
 @echo off
-TITLE Esports Project Launcher
-SET PROJECT_ROOT=%~dp0
-SET MAVEN_BIN=%PROJECT_ROOT%maven\apache-maven-3.9.6\bin\mvn.cmd
+setlocal
+title Esports Tournament Management System
 
-echo ========================================================
-echo   Starting Esports Tournament Project...
-echo ========================================================
+set "PROJECT_ROOT=%~dp0"
 
-:: Background task to open the browser after a delay
-:: Vite usually takes a few seconds to be ready
-echo [INFO] Browser will open automatically at http://localhost:5173/ in 10 seconds.
-start /B cmd /c "ping -n 11 127.0.0.1 > NUL && start http://localhost:5173/"
+echo ======================================================
+echo   Esports Tournament Management System
+echo ======================================================
+echo.
 
-:: Start the Backend
-echo [INFO] Starting Spring Boot Backend...
-if not exist "%MAVEN_BIN%" (
-    echo [WARNING] Local Maven not found at %MAVEN_BIN%. Trying system 'mvn'...
-    start "Esports Backend" cmd /k "cd /d %PROJECT_ROOT%backend && mvn spring-boot:run"
-) else (
-    start "Esports Backend" cmd /k "cd /d %PROJECT_ROOT%backend && ^"%MAVEN_BIN%^" spring-boot:run"
+where java >nul 2>nul
+if errorlevel 1 (
+    echo [ERROR] Java was not found. Install JDK 21 and add it to PATH.
+    pause
+    exit /b 1
 )
 
-:: Check for node_modules in frontend
-if not exist "%PROJECT_ROOT%frontend\node_modules\" (
-    echo [INFO] node_modules not found. Running npm install in frontend...
-    echo This might take a minute...
+where mvn >nul 2>nul
+if errorlevel 1 (
+    echo [ERROR] Maven was not found. Install Maven and add its bin folder to PATH.
+    pause
+    exit /b 1
+)
+
+where node >nul 2>nul
+if errorlevel 1 (
+    echo [ERROR] Node.js was not found. Install Node.js 18 or newer.
+    pause
+    exit /b 1
+)
+
+where npm >nul 2>nul
+if errorlevel 1 (
+    echo [ERROR] npm was not found. Reinstall Node.js or repair PATH.
+    pause
+    exit /b 1
+)
+
+if not exist "%PROJECT_ROOT%frontend\node_modules" (
+    echo [INFO] Installing frontend dependencies for the first run...
     pushd "%PROJECT_ROOT%frontend"
     call npm install
+    if errorlevel 1 (
+        echo [ERROR] npm install failed.
+        popd
+        pause
+        exit /b 1
+    )
     popd
 )
 
-:: Start the Frontend
-echo [INFO] Starting Vite Frontend...
-start "Esports Frontend" cmd /k "cd /d %PROJECT_ROOT%frontend && npm run dev"
+echo [INFO] Starting backend in a new terminal...
+start "Esports Backend" /D "%PROJECT_ROOT%backend" cmd /k "mvn spring-boot:run"
 
-echo ========================================================
-echo   Both servers are starting!
-echo   - Backend: http://localhost:8080
-echo   - Frontend: http://localhost:5173
+echo [INFO] Starting frontend in a new terminal...
+start "Esports Frontend" /D "%PROJECT_ROOT%frontend" cmd /k "npm run dev"
+
 echo.
-echo   You can safely close this window.
-echo ========================================================
+echo Backend:  http://localhost:8080
+echo Frontend: http://localhost:5173
+echo.
+echo Make sure MySQL Server is running and DB_PASSWORD is set
+echo in the environment before launching this script.
+echo Keep both server windows open while using the app.
+echo.
 pause
-
