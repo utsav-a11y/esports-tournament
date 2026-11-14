@@ -3,18 +3,22 @@ package com.esports.tournament.controller;
 import com.esports.tournament.entity.Match;
 import com.esports.tournament.entity.MatchResult;
 import com.esports.tournament.service.MatchService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/matches")
-@CrossOrigin(origins = "*")
-
 public class MatchController {
-    @org.springframework.beans.factory.annotation.Autowired private MatchService matchService;
+
+    private final MatchService matchService;
+
+    public MatchController(MatchService matchService) {
+        this.matchService = matchService;
+    }
 
     @GetMapping
     public ResponseEntity<List<Match>> getAllMatches() {
