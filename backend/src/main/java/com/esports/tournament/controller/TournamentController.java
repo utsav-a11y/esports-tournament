@@ -2,18 +2,24 @@ package com.esports.tournament.controller;
 
 import com.esports.tournament.entity.Tournament;
 import com.esports.tournament.service.TournamentService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/tournaments")
-@CrossOrigin(origins = "*")
-
 public class TournamentController {
-    @org.springframework.beans.factory.annotation.Autowired private TournamentService tournamentService;
+
+    private final TournamentService tournamentService;
+
+    public TournamentController(TournamentService tournamentService) {
+        this.tournamentService = tournamentService;
+    }
 
     @GetMapping
     public ResponseEntity<List<Tournament>> getAllTournaments() {
