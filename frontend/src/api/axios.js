@@ -1,10 +1,9 @@
-import axios from 'react-axios';
+import axios from 'axios';
 
-// Using standard axios instance for API calls to Spring Boot
-import rawAxios from 'axios';
-
-const api = rawAxios.create({
-  baseURL: 'http://localhost:8080/api',
+// Use Vite's same-origin proxy during development.
+// This works whether the frontend is opened via localhost or a LAN IP.
+const api = axios.create({
+  baseURL: '/api',
   headers: {
     'Content-Type': 'application/json',
   },
